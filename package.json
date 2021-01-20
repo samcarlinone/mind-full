@@ -1,0 +1,17 @@
+{
+  "name": "mind-full",
+  "version": "0.1.0",
+  "private": true,
+  "license": "unlicense",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^10.0.0",
+    "next-pwa": "^5.0.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  }
+}
