@@ -18,6 +18,10 @@
 # PWA stuff
 /dev
 
+sw.js
+sw.js.map
+workbox-*
+
 # misc
 .DS_Store
 
