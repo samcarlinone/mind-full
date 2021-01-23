@@ -1,8 +1,8 @@
 {
   "name": "Mind-Full: A word search game.",
   "short_name": "Mind-Full",
-  "theme_color": "#FFFFFF",
-  "background_color": "#130303",
+  "theme_color": "#130303",
+  "background_color": "#FFFFFF",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
