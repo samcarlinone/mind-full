@@ -1,0 +1,65 @@
+/* Vars */
+body {
+  --gap: 16px;
+
+  --white: #ffffffff;
+  --grey: #eeeeeeff;
+  --black: #130303ff;
+  --accent-bold: #db162fff;
+  --accent-subtle: #1098f7ff;
+}
+
+/* Mobile Vars */
+@media (max-width: 380px) {
+  body {
+    --gap: 8px;
+  }
+}
+
+/* Calculated Vars */
+body {
+  --grid-size: calc(100vmin - 2 * var(--gap));
+}
+
+/* Styling */
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* Shared */
+button {
+  font-family: serif;
+  font-weight: 700;
+  font-size: calc(max(var(--grid-size) / 10, 1.5rem));
+  text-transform: uppercase;
+  
+  border: none;
+  border-radius: var(--gap);
+  
+  padding: 0 var(--gap);
+  
+  justify-self: stretch;
+  
+  background-color: #EEE;
+  transition: background-color 0.2s;
+  
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #CCC;
+}
+
+button:active {
+  background-color: #AAA;
+  transition: background-color 0s;
+}
+
+input {
+  font-family: serif;
+}
+
+input::placeholder {
+  font-family: serif;
+}
