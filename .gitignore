@@ -10,8 +10,12 @@
 
 # next.js
 /.next/
+/out/
 
-# development
+# production
+/build
+
+# PWA stuff
 /dev
 
 # misc
