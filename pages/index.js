@@ -1,7 +1,26 @@
-import styles from '../styles/Index.module.css'
+import { useState } from 'react';
 
-const Index = () => (
-  <div className={styles.home}>Hello World</div>
-)
+import { PHASES } from '../source/shared/constants';
+import Setup from '../source/setup/Setup';
+import Play from '../source/play/Play';
+import Review from '../source/review/Review';
 
-export default Index
+
+const Index = () => {
+  const [phase, setPhase] = useState(PHASES.SETUP);
+  const [seed, setSeed] = useState('');
+  const [words, setWords] = useState([]);
+
+  if (phase === PHASES.SETUP)
+    return <Setup seed={seed} setSeed={setSeed} setPhase={setPhase} />;
+
+  if (phase === PHASES.PLAY)
+    return <Play seed={seed} words={words} setWords={setWords} setPhase={setPhase} />;
+
+  if (phase === PHASES.REVIEW)
+    return <Review words={words} setWords={setWords} setPhase={setPhase} />;
+
+  return <div>Error</div>;
+};
+
+export default Index;

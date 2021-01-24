@@ -1,0 +1,15 @@
+.play {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time {
+  font-size: calc(max(1.5rem, var(--grid-size) / 12));
+  margin: var(--gap);
+}

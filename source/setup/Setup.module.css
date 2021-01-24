@@ -1,0 +1,52 @@
+.setup {
+  display: flex;
+  flex-direction: column;
+  
+  justify-content: center;
+  align-items: center;
+  
+  height: 100vh;
+}
+
+.name {
+  font-size: 25vmin;
+  font-weight: 700;
+  
+  margin-bottom: 8vmin;
+}
+
+.name > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brain {
+  height: 27vmin;
+  
+  padding-top: 4vmin;
+}
+
+.inputs {
+  width: 60vmin;
+}
+
+.setup input {
+  width: 100%;
+  box-sizing: border-box;
+  
+  margin-bottom: -1px;
+  text-align: center;
+  
+  font-size: 8vmin;
+  
+  border: 1px solid #DDD;
+  border-top-left-radius: var(--gap);
+  border-top-right-radius: var(--gap);
+}
+
+.setup button {
+  width: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

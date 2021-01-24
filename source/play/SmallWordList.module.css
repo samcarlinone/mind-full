@@ -1,0 +1,23 @@
+.wordList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wordList > span {
+  font-size: calc(max(1.5rem, var(--grid-size) / 16));
+  
+  margin: var(--gap);
+}
+
+.noWords {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  padding: var(--gap);
+  
+  color: #AAA;
+  
+  font-size: calc(var(--grid-size) / 12);
+}
