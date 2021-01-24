@@ -2,11 +2,9 @@ import { useMemo, useCallback, useState } from 'react';
 import clsx from 'clsx';
 
 import { PHASES } from '../shared/constants';
+import { scoreWord } from '../shared/scoreWord';
 
 import classes from './Review.module.css';
-
-const scoreWord = ({ word }) =>
-  ({ 3: 1, 4: 1, 5: 2, 6: 3, 7: 5 }[word.length] ?? 11);
 
 const Review = ({ words, setWords, setPhase }) => {
   const sortedWords = useMemo(() =>

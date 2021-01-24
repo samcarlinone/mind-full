@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 
+import { scoreWord } from '../shared/scoreWord';
+
 import classes from './Board.module.css';
 
 const Board = ({ letters, setWords }) => {
@@ -47,17 +49,32 @@ const Board = ({ letters, setWords }) => {
       return;
     }
     
-    if (isNaN(index) || (touchIndices.length > 1 && Math.abs(touchIndices[touchIndices.length - 1] - index) > 5)) return;
+    // TODO: Fixme
+    const currentLastIndex = touchIndices[touchIndices.length - 1];
+    const isAdjacent = true;
+    
+    if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent)) return;
 
     setTouchIndexes([...touchIndices, index]);
+    window.navigator.vibrate([150]);
   })
 
   const pointerUp = useCallback((e) => {
     setWords((words) => {
-      const newWord = mapIndexesToWord();
+      const word = mapIndexesToWord();
 
-      if (newWord.length < 3 || words.includes(newWord)) return words;
-      else return [newWord, ...words];
+      if (word.length < 3 || words.includes(word)) return words;
+      else {
+        const score = scoreWord({ word });
+        window.navigator.vibrate(new Array(score)
+          .fill('150')
+          .join(',50,')
+          .split(',')
+          .map(n => +n)
+        );
+
+        return [word, ...words];
+      }
     });
 
     setPointerActive(false);
