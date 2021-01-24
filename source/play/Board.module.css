@@ -45,6 +45,10 @@
   position: relative;
 }
 
+.cell > span {
+  pointer-events: none;
+}
+
 .usedCell {
   color: #CCC;
   z-index: var(--element-z);
@@ -69,13 +73,12 @@
 }
 
 .word {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
   width: var(--grid-size);
   height: calc(var(--grid-size) / 4);
+  line-height: calc(var(--grid-size) / 4);
   
+  box-sizing: border-box;
+  padding: 0 var(--gap);
   margin-top: var(--gap);
   
   background-color: #EEE;
@@ -85,4 +88,11 @@
   font-weight: 700;
   
   user-select: none;
+
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: '';
+  direction: rtl;
+  text-align: left;
 }
