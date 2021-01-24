@@ -14,7 +14,7 @@ const Play = ({ seed, words, setWords, setPhase }) => {
 
   useEffect(() => {
     window.setTimeout(() => {
-      setTime(time - 180);
+      setTime(time - 1);
 
       if (time === 0) setPhase(PHASES.REVIEW);
     }, 1000);

@@ -33,7 +33,7 @@
   align-items: center;
   
   background-color: #FFF;
-  border-radius: var(--gap);
+  border-radius: 35%;
   
   font-size: calc(var(--grid-size) / 7);
   font-weight: 700;
@@ -52,23 +52,18 @@
   transform-origin: center;
 }
 
-.usedCell::before {
-  content: "";
-  
+.connector {
   position: absolute;
   z-index: -1;
   left: 50%;
   
-  width: calc(3 * var(--gap) * var(--element-size));
-  height: var(--gap);
-  background-color: #FFF;
+  width: calc((100% + var(--gap)) * var(--offset-distance));
+  height: 10%;
+  background-color: var(--accent-bold);
   
   transform-origin: center left;
   transform:
-    rotate(var(--next-angle))
-    translateX(calc(
-      var(--grid-size) * var(--offset-distance) / 8  - var(--gap) * 2
-    ));
+    rotate(var(--next-angle));
   
   pointer-events: none;
 }

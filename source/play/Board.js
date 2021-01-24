@@ -68,15 +68,15 @@ const Board = ({ letters, setWords }) => {
     <>
       <div className={classes.board} ref={boardRef} onPointerDown={pointerDown} onPointerUp={pointerUp}>
         {letters.map((letter, i) => {
-          const touchIndex = touchIndices.indexOf(i)
-          const nextDirection = {'1': 0, '5': 45, '4': 90, '3': 135, '-1': 180, '-5': 225, '-4': 270, '-3': 315}[touchIndices[touchIndex + 1] - touchIndices[touchIndex]]
+          const touchIndex = touchIndices.indexOf(i);
+          const isTouched = touchIndex !== -1;
+
+          const nextDirection = {'1': 0, '5': 45, '4': 90, '3': 135, '-1': 180, '-5': 225, '-4': 270, '-3': 315}[touchIndices[touchIndex + 1] - touchIndices[touchIndex]];
           
-          const style = nextDirection !== undefined ? {
+          const style = {
             '--next-angle': `${nextDirection}deg`,
-            '--element-z': (128 - touchIndex * 2).toString(),
             '--offset-distance': nextDirection % 10 === 0 ? '1' : Math.SQRT2.toString(),
-            '--element-size': touchIndex === letters.length - 1 ? '0' : '1'
-          } : {}
+          };
           
           return (
             <div
@@ -84,11 +84,14 @@ const Board = ({ letters, setWords }) => {
               data-index={i}
               style={style}
               className={clsx(classes.cell, {
-                [classes.usedCell]: touchIndices.includes(i)
+                [classes.usedCell]: isTouched
               })}
               onPointerMove={pointerMove}
             >
-              {letter}
+              <span>{letter}</span>
+              {isTouched && touchIndex < touchIndices.length - 1
+                ? <div className={classes.connector} style={style} />
+                : null}
             </div>
           )
         })}
