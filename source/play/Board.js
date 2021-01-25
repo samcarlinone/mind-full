@@ -1,8 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 
-import { scoreWord } from '../shared/scoreWord';
-
 import classes from './Board.module.css';
 
 const Board = ({ letters, setWords }) => {
@@ -37,6 +35,9 @@ const Board = ({ letters, setWords }) => {
     setPointerActive(true);
   })
 
+  const SHORT_VIBRATION = 35;
+  const LONG_VIBRATION = [0, 50, 150];
+
   const pointerMove = useCallback((e) => {
     if (!pointerActive) return;
 
@@ -45,7 +46,11 @@ const Board = ({ letters, setWords }) => {
     const letterPosition = touchIndices.indexOf(index);
 
     if (letterPosition !== -1) {
-      setTouchIndexes(touchIndices.slice(0, letterPosition + 1));
+      if (letterPosition !== touchIndices.length - 1) {
+        setTouchIndexes(touchIndices.slice(0, letterPosition + 1));
+        window.navigator.vibrate(SHORT_VIBRATION);
+      }
+
       return;
     }
     
@@ -56,23 +61,16 @@ const Board = ({ letters, setWords }) => {
     if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent)) return;
 
     setTouchIndexes([...touchIndices, index]);
-    window.navigator.vibrate([150]);
+    window.navigator.vibrate(SHORT_VIBRATION);
   })
 
-  const pointerUp = useCallback((e) => {
+  const pointerUp = useCallback(() => {
     setWords((words) => {
       const word = mapIndexesToWord();
 
       if (word.length < 3 || words.includes(word)) return words;
       else {
-        const score = scoreWord({ word });
-        window.navigator.vibrate(new Array(score)
-          .fill('150')
-          .join(',50,')
-          .split(',')
-          .map(n => +n)
-        );
-
+        window.navigator.vibrate(LONG_VIBRATION);
         return [word, ...words];
       }
     });
