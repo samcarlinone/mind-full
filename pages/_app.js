@@ -28,6 +28,7 @@ const App = ({ Component, pageProps }) => (
       />
       <link rel="apple-touch-icon" href="/apple-icon.png"></link>
       <meta name="theme-color" content="#130303" />
+      <link rel="stylesheet" href="/iconfont/material-icons.css"></link>
     </Head>
     <Component {...pageProps} />
   </>

@@ -5,8 +5,22 @@
 }
 
 .playHeader {
+  width: var(--grid-size);
+
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.playHeader > span {
+  font-size: calc(max(1.5rem, var(--grid-size) / 12));
+
+  padding: calc(var(--gap) / 4);
+  background-color: var(--grey);
+  border-radius: 50%;
+
+  cursor: pointer;
+  user-select: none;
 }
 
 .time {

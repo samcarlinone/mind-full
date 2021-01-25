@@ -11,7 +11,7 @@ const indexDistance = (index1, index2) =>
     (Math.floor(index1 / SIZE) - Math.floor(index2 / SIZE)) ** 2
   );
 
-const Board = ({ letters, setWords }) => {
+const Board = ({ letters, setWords, angle }) => {
   const [pointerActive, setPointerActive] = useState(false);
   const [touchIndices, setTouchIndexes] = useState([]);
 
@@ -88,7 +88,13 @@ const Board = ({ letters, setWords }) => {
 
   return (
     <>
-      <div className={classes.board} ref={boardRef} onPointerDown={pointerDown} onPointerUp={pointerUp}>
+      <div
+        className={classes.board}
+        ref={boardRef}
+        onPointerDown={pointerDown}
+        onPointerUp={pointerUp}
+        style={{'--angle': `${angle}deg`}}
+      >
         {letters.map((letter, i) => {
           const touchIndex = touchIndices.indexOf(i);
           const isTouched = touchIndex !== -1;
