@@ -7,8 +7,8 @@ import SmallWordList from './SmallWordList';
 
 import classes from './Play.module.css';
 
-const Play = ({ seed, words, setWords, setPhase }) => {
-  const letters = useMemo(() => generateBoard(seed.toUpperCase()), [seed]);
+const Play = ({ group, seed, words, setWords, setPhase }) => {
+  const letters = useMemo(() => generateBoard(group ? seed.toUpperCase() : null), [seed]);
 
   const [time, setTime] = useState(180); // 180 seconds = 3 minutes
   const [boardAngle, setBoardAngle] = useState(0);
@@ -24,6 +24,7 @@ const Play = ({ seed, words, setWords, setPhase }) => {
   }, [time]);
 
   const handleQuit = useCallback(() => {
+    setWords([]);
     setPhase(PHASES.SETUP);
   }, []);
 

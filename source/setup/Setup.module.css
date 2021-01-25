@@ -4,15 +4,17 @@
   
   justify-content: center;
   align-items: center;
-  
-  height: 100vh;
+
+  height: var(--window-height);
+}
+
+.setup > div {
+  margin: 5vmin 0;
 }
 
 .name {
   font-size: 25vmin;
   font-weight: 700;
-  
-  margin-bottom: 8vmin;
 }
 
 .name > div {
@@ -31,7 +33,7 @@
   width: 60vmin;
 }
 
-.setup input {
+.inputs input {
   width: 100%;
   box-sizing: border-box;
   
@@ -39,14 +41,90 @@
   text-align: center;
   
   font-size: 8vmin;
-  
-  border: 1px solid #DDD;
-  border-top-left-radius: var(--gap);
-  border-top-right-radius: var(--gap);
+
+  border: none;
 }
 
-.setup button {
+.inputContainer {
+  border: 1px transparent solid;
+  border-top-left-radius: var(--gap);
+  border-top-right-radius: var(--gap);
+
+  padding-bottom: 4vmin;
+  margin-bottom: -4vmin;
+
+  overflow: hidden;
+
+  height: 0;
+  transition: height 0.25s var(--curve);
+}
+
+.inputContainer.active {
+  border: 1px solid var(--grey);
+  height: 10vmin;
+}
+
+.inputs button {
   width: 100%;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+}
+
+.groupToggle {
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.groupToggle > * {
+  margin: 0 2vmin;
+}
+
+.groupToggle span {
+  font-size: 10vmin;
+  border: 1px solid transparent;
+}
+
+.activeMode {
+  border-bottom: 1px solid var(--accent-subtle) !important;
+}
+
+.toggleIndicator {
+  width: 20vmin;
+
+  padding: calc(var(--gap) / 2);
+
+  background-color: var(--grey);
+  border-radius: 10vmin;
+
+  display: flex;
+  align-items: center;
+}
+
+.toggleIndicator span {
+  color: var(--white);
+  background-color: var(--accent-subtle);
+  border-radius: 50%;
+
+  position: relative;
+  left: 0px;
+
+  transition: left 0.25s var(--curve), transform 0.25s var(--curve);
+}
+
+.toggleIndicator .active {
+  left: 10vmin;
+  transform: rotate(180deg);
+}
+
+.explainer {
+  width: 80vw;
+  font-size: 1.25rem;
+  color: transparent;
+
+  transition: color 0.25s var(--curve);
+}
+
+.explainer.active {
+  color: var(--black);
 }

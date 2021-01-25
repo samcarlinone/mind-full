@@ -7,6 +7,8 @@ body {
   --black: #130303ff;
   --accent-bold: #db162fff;
   --accent-subtle: #1098f7ff;
+
+  --curve: cubic-bezier(1.000, -0.650, 0.000, 1.650);
 }
 
 /* Mobile Vars */

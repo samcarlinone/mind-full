@@ -52,7 +52,7 @@
   pointer-events: none;
 
   transform: rotate(calc(360deg - var(--angle)));
-  transition: transform 0.2s 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out 0.2s;
 }
 
 .usedCell {
