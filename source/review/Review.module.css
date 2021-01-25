@@ -1,30 +1,32 @@
 .review {
-  height: 100vh;
-  
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .reviewWordList {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  
-  max-height: 80vh;
   width: 100vw;
+  box-sizing: border-box;
+
+  font-size: calc(max(1.25rem, var(--grid-size) / 12));
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--longest-length));
+  gap: var(--gap);
+
+  padding: var(--gap);
 }
 
 .reviewWordList > span {
   font-size: calc(max(1.25rem, var(--grid-size) / 12));
-  margin: calc(var(--gap) / 4) calc(var(--gap) * 2);
+  width: min-content;
   
   cursor: pointer;
 }
 
 .reviewWordList > .crossed {
   text-decoration: line-through;
-  text-decoration-color: #C14343;
+  text-decoration-color: var(--accent-bold);
 }
 
 .score {

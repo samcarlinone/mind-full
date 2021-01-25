@@ -14,11 +14,13 @@ const Play = ({ seed, words, setWords, setPhase }) => {
   const [boardAngle, setBoardAngle] = useState(0);
 
   useEffect(() => {
-    window.setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       setTime(time - 1);
 
       if (time === 0) setPhase(PHASES.REVIEW);
     }, 1000);
+
+    return () => window.clearTimeout(timeout);
   }, [time]);
 
   const handleQuit = useCallback(() => {

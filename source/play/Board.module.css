@@ -24,7 +24,7 @@
   z-index: 0;
 
   transform: rotate(var(--angle));
-  transition: transform 0.25s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .cell {
@@ -36,7 +36,7 @@
   align-items: center;
   
   background-color: #FFF;
-  border-radius: 35%;
+  border-radius: 25%;
   
   font-size: calc(var(--grid-size) / 7);
   font-weight: 700;
@@ -52,7 +52,7 @@
   pointer-events: none;
 
   transform: rotate(calc(360deg - var(--angle)));
-  transition: transform 0.25s 0.25s ease-in-out;
+  transition: transform 0.2s 0.2s ease-in-out;
 }
 
 .usedCell {

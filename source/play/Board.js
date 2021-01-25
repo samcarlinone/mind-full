@@ -50,6 +50,9 @@ const Board = ({ letters, setWords, angle }) => {
     if (!pointerActive) return;
 
     const element = document.elementFromPoint(e.clientX, e.clientY);
+
+    if (!element) return;
+
     const index = +element.dataset.index;
     const letterPosition = touchIndices.indexOf(index);
 
