@@ -3,6 +3,14 @@ import clsx from 'clsx';
 
 import classes from './Board.module.css';
 
+const SIZE = 4
+
+const indexDistance = (index1, index2) =>
+  Math.sqrt(
+    (index1 % SIZE - index2 % SIZE) ** 2 +
+    (Math.floor(index1 / SIZE) - Math.floor(index2 / SIZE)) ** 2
+  );
+
 const Board = ({ letters, setWords }) => {
   const [pointerActive, setPointerActive] = useState(false);
   const [touchIndices, setTouchIndexes] = useState([]);
@@ -54,9 +62,8 @@ const Board = ({ letters, setWords }) => {
       return;
     }
     
-    // TODO: Fixme
     const currentLastIndex = touchIndices[touchIndices.length - 1];
-    const isAdjacent = true;
+    const isAdjacent = indexDistance(currentLastIndex, index) < 1.5;
     
     if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent)) return;
 
