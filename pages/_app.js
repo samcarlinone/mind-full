@@ -33,7 +33,7 @@ const App = ({ Component, pageProps }) => (
       <meta property="og:title" content="Mindfull" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://mindfull.samcarlin.one" />
-      <meta property="og:image" content="/icons/icon-512x512.png" />
+      <meta property="og:image" content="https://mindfull.samcarlin.one/icons/icon-512x512.png" />
     </Head>
     <Component {...pageProps} />
   </>
