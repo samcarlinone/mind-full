@@ -29,6 +29,11 @@ const App = ({ Component, pageProps }) => (
       <link rel="apple-touch-icon" href="/apple-icon.png"></link>
       <meta name="theme-color" content="#130303" />
       <link rel="stylesheet" href="/iconfont/material-icons.css"></link>
+
+      <meta property="og:title" content="Mindfull" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://mindfull.samcarlin.one" />
+      <meta property="og:image" content="/icons/icon-512x512.png" />
     </Head>
     <Component {...pageProps} />
   </>
