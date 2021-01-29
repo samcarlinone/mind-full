@@ -59,7 +59,7 @@ const Board = ({ letters, setWords, angle }) => {
     if (letterPosition !== -1) {
       if (letterPosition !== touchIndices.length - 1) {
         setTouchIndexes(touchIndices.slice(0, letterPosition + 1));
-        window.navigator.vibrate(SHORT_VIBRATION);
+        if (window.navigator.vibrate) window.navigator.vibrate(SHORT_VIBRATION);
       }
 
       return;
@@ -71,7 +71,7 @@ const Board = ({ letters, setWords, angle }) => {
     if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent)) return;
 
     setTouchIndexes([...touchIndices, index]);
-    window.navigator.vibrate(SHORT_VIBRATION);
+    if (window.navigator.vibrate) window.navigator.vibrate(SHORT_VIBRATION);
   })
 
   const pointerUp = useCallback(() => {
@@ -80,7 +80,7 @@ const Board = ({ letters, setWords, angle }) => {
 
       if (word.length < 3 || words.includes(word)) return words;
       else {
-        window.navigator.vibrate(LONG_VIBRATION);
+        if (window.navigator.vibrate) window.navigator.vibrate(LONG_VIBRATION);
         return [word, ...words];
       }
     });
