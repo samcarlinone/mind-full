@@ -1,15 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 
+import {isAdjacent} from '../shared/isAdjacent';
+
 import classes from './Board.module.css';
-
-const SIZE = 4
-
-const indexDistance = (index1, index2) =>
-  Math.sqrt(
-    (index1 % SIZE - index2 % SIZE) ** 2 +
-    (Math.floor(index1 / SIZE) - Math.floor(index2 / SIZE)) ** 2
-  );
 
 const Board = ({ letters, setWords, angle }) => {
   const [pointerActive, setPointerActive] = useState(false);
@@ -66,9 +60,8 @@ const Board = ({ letters, setWords, angle }) => {
     }
     
     const currentLastIndex = touchIndices[touchIndices.length - 1];
-    const isAdjacent = indexDistance(currentLastIndex, index) < 1.5;
     
-    if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent)) return;
+    if (isNaN(index) || (touchIndices.length > 0 && !isAdjacent(currentLastIndex, index))) return;
 
     setTouchIndexes([...touchIndices, index]);
     if (window.navigator.vibrate) window.navigator.vibrate(SHORT_VIBRATION);
