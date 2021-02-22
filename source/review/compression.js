@@ -55,9 +55,68 @@ const findPaths = (word, lookup) => {
     paths = continuedPaths;
   }
 
-  return paths
+  return paths;
+}
+
+const unique = (value, index, arr) => arr.indexOf(value) === index;
+
+// Returns [
+//  [[2, ...], [2, ...], ..., [2, ...]],
+//  [[3, ...], [3, ...]],
+// ]
+const groupPaths = (wordsAsPathOptions) => {
+  compatiblePaths = [];
+
+  while (wordsAsPaths.length > 0) {
+    firstIndexes = wordsAsPaths
+      .map((wordPaths) => wordPaths.map((path) => path[0]))
+      .map((wordFirstIndexes) => wordFirstIndexes.filter(unique))
+      .reduce((counts, wordFirstIndexesUnique) => {
+        wordFirstIndexesUnique.forEach((index) => counts[index] = (counts[index] ?? 0) + 1);
+        return counts;
+      }, {});
+
+    mostCommonFirstIndex = Number(
+      Object.entries(firstIndexes)
+        .reduce((bestPair, pair) => pair[1] > bestPair[1] ? pair : bestPair)[0]
+    );
+
+    [wordsAsPaths, matchingWords] = wordsAsPaths.reduce(
+      (result, wordPaths) => {
+        const path = wordPaths.find((path) => path[0] === mostCommonFirstIndex);
+        
+        if (path) result[1].push(path);
+        else result[0].push(wordPaths);
+
+        return result;
+      },
+      [[], []],
+    );
+
+    compatiblePaths.push(matchingWords);
+  };
+
+  return compatiblePaths;
+}
+
+// Returns {index1: {index3: {}}, index2: {}}
+const pathsToTree = (paths) => {
+  const tree = {};
+
+  paths.forEach((path) => {
+    let node = tree;
+
+    path.forEach((index) => {
+      node[index] = node[index] ?? {};
+      node = node[index];
+    });
+  });
+
+  return tree;
 }
 
 lookup = generateBoardLookup(board);
+wordsAsPaths = words.map((word) => findPaths(word, lookup));
 
-findPaths('toe', lookup)
+compatiblePaths = groupPaths(wordsAsPaths);
+compatiblePaths.map(pathsToTree)
