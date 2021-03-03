@@ -10,6 +10,8 @@ body {
   --accent-subtle: #1098f7ff;
 
   --curve: cubic-bezier(1.000, -0.650, 0.000, 1.650);
+
+  --serif-fonts: Georgia, Garamond, "Times New Roman", Times, serif;
 }
 
 /* Mobile Vars */
@@ -27,8 +29,17 @@ body {
 }
 
 /* Shared */
-button {
-  font-family: serif;
+* {
+  font-family: var(--serif-fonts);
+}
+
+input {
+  appearance: none;
+}
+
+button, input[type="submit"] {
+  appearance: none;
+
   font-weight: 700;
   font-size: calc(max(var(--grid-size) / 10, 1.5rem));
   text-transform: uppercase;
@@ -46,21 +57,13 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:hover, input[type='submit']:hover {
   background-color: #CCC;
 }
 
-button:active {
+button:active, input[type='submit']:active {
   background-color: #AAA;
   transition: background-color 0s;
-}
-
-input {
-  font-family: serif;
-}
-
-input::placeholder {
-  font-family: serif;
 }
 
 .material-icons {

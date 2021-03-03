@@ -35,14 +35,12 @@ const Setup = ({ state, dispatch }) => {
           groups
         </span>
       </div>
-      <div className={classes.inputs}>
+      <form className={classes.inputs} onSubmit={handleStartGame}>
         <div className={clsx(classes.inputContainer, {[classes.active]: group})}>
           <input type="text" name="seed" placeholder="SEED" value={seed} onChange={handleSeedChange} />
         </div>
-        <button onClick={handleStartGame}>
-          Start
-        </button>
-      </div>
+        <input type="submit" value="Start" />
+      </form>
       <div className={clsx(classes.explainer, {[classes.active]: group})}>
         Just have everyone type the same <i>SEED</i> and everyone will get the same board.
       </div>

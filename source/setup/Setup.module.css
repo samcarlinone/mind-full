@@ -8,6 +8,10 @@
   height: var(--window-height);
 }
 
+.setup > * {
+  margin: 8px 0;
+}
+
 .name {
   font-size: 25vmin;
   font-weight: 700;
