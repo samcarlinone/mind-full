@@ -12,7 +12,7 @@ const Play = ({ state, dispatch }) => {
 
   const letters = useMemo(() => generateBoard(seed.toUpperCase()), [seed]);
 
-  const [time, setTime] = useState(20); // 180 seconds = 3 minutes
+  const [time, setTime] = useState(180); // 180 seconds = 3 minutes
   const [boardAngle, setBoardAngle] = useState(0);
 
   useEffect(() => {
