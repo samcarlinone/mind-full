@@ -4,8 +4,10 @@ import clsx from 'clsx';
 import {isAdjacent} from '../shared/isAdjacent';
 
 import classes from './Board.module.css';
+import {ACTIONS} from '../shared/reducer';
+import {SHORT_VIBRATION} from '../shared/constants';
 
-const Board = ({ letters, setWords, angle }) => {
+const Board = ({ dispatch, letters, angle }) => {
   const [pointerActive, setPointerActive] = useState(false);
   const [touchIndices, setTouchIndexes] = useState([]);
 
@@ -37,9 +39,6 @@ const Board = ({ letters, setWords, angle }) => {
     setPointerActive(true);
   })
 
-  const SHORT_VIBRATION = 35;
-  const LONG_VIBRATION = [0, 50, 150];
-
   const pointerMove = useCallback((e) => {
     if (!pointerActive) return;
 
@@ -68,16 +67,8 @@ const Board = ({ letters, setWords, angle }) => {
   })
 
   const pointerUp = useCallback(() => {
-    setWords((words) => {
-      const word = mapIndexesToWord();
-
-      if (word.length < 3 || words.includes(word)) return words;
-      else {
-        if (window.navigator.vibrate) window.navigator.vibrate(LONG_VIBRATION);
-        return [word, ...words];
-      }
-    });
-
+    dispatch(ACTIONS.ADD_WORD, mapIndexesToWord());
+    
     setPointerActive(false);
     setTouchIndexes([]);
   });

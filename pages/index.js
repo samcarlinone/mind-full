@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 import { PHASES } from '../source/shared/constants';
+import { INITIAL_STATE, reducer } from '../source/shared/reducer';
 import Setup from '../source/setup/Setup';
 import Play from '../source/play/Play';
 import Review from '../source/review/Review';
-
+import produce from 'immer';
 
 const Index = () => {
-  const [phase, setPhase] = useState(PHASES.SETUP);
-  const [group, setGroup] = useState(false);
-  const [seed, setSeed] = useState('');
-  const [words, setWords] = useState([]);
+  const [state, hookDispatch] = useReducer(
+    (state, action) => produce(state, draft => reducer[action.type](draft, action)),
+    INITIAL_STATE,
+  );
+
+  const dispatch = useCallback((type, payload) => hookDispatch({type, payload}), []);
 
   const handleResize = useCallback(
     () => document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`),
@@ -24,14 +27,14 @@ const Index = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [])
 
-  if (phase === PHASES.SETUP)
-    return <Setup seed={seed} setSeed={setSeed} setPhase={setPhase} group={group} setGroup={setGroup} />;
+  if (state.phase === PHASES.SETUP)
+    return <Setup state={state} dispatch={dispatch} />;
 
-  if (phase === PHASES.PLAY)
-    return <Play group={group} seed={seed} words={words} setWords={setWords} setPhase={setPhase} />;
+  if (state.phase === PHASES.PLAY)
+    return <Play state={state} dispatch={dispatch} />;
 
-  if (phase === PHASES.REVIEW)
-    return <Review words={words} setWords={setWords} setPhase={setPhase} />;
+  if (state.phase === PHASES.REVIEW)
+    return <Review state={state} dispatch={dispatch} />;
 
   return <div>Error</div>;
 };

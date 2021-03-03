@@ -1,32 +1,33 @@
 import { useMemo, useEffect, useState, useCallback } from 'react';
 
-import { PHASES } from '../shared/constants';
 import { generateBoard } from './generateBoard';
 import Board from './Board';
 import SmallWordList from './SmallWordList';
 
 import classes from './Play.module.css';
+import {ACTIONS} from '../shared/reducer';
 
-const Play = ({ group, seed, words, setWords, setPhase }) => {
-  const letters = useMemo(() => generateBoard(group ? seed.toUpperCase() : null), [seed]);
+const Play = ({ state, dispatch }) => {
+  const {seed, words} = state;
 
-  const [time, setTime] = useState(180); // 180 seconds = 3 minutes
+  const letters = useMemo(() => generateBoard(seed.toUpperCase()), [seed]);
+
+  const [time, setTime] = useState(20); // 180 seconds = 3 minutes
   const [boardAngle, setBoardAngle] = useState(0);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       setTime(time - 1);
 
-      if (time === 0) setPhase(PHASES.REVIEW);
+      if (time === 0) {
+        dispatch(ACTIONS.END_GAME);
+      }
     }, 1000);
 
     return () => window.clearTimeout(timeout);
   }, [time]);
 
-  const handleQuit = useCallback(() => {
-    setWords([]);
-    setPhase(PHASES.SETUP);
-  }, []);
+  const handleQuit = useCallback(() => dispatch(ACTIONS.RESTART_GAME), []);
 
   const handleRotate = useCallback(() => {
     setBoardAngle((angle) => angle - 90);
@@ -42,7 +43,7 @@ const Play = ({ group, seed, words, setWords, setPhase }) => {
         <span className="material-icons" onClick={handleRotate}>rotate_90_degrees_ccw</span>
       </div>
 
-      <Board letters={letters} setWords={setWords} angle={boardAngle} />
+      <Board dispatch={dispatch} letters={letters} angle={boardAngle} />
       <SmallWordList words={words} />
     </div>
   );

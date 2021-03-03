@@ -2,14 +2,10 @@
   display: flex;
   flex-direction: column;
   
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
   height: var(--window-height);
-}
-
-.setup > div {
-  margin: 5vmin 0;
 }
 
 .name {
@@ -127,4 +123,20 @@
 
 .explainer.active {
   color: var(--black);
+}
+
+.actionIcons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.actionIcon {
+  font-size: calc(max(1.5rem, var(--grid-size) / 8));
+
+  padding: calc(var(--gap) / 4);
+  background-color: var(--grey);
+  border-radius: 8px;
+
+  cursor: pointer;
 }

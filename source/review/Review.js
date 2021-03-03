@@ -1,16 +1,19 @@
 import { useMemo, useCallback, useState } from 'react';
 import clsx from 'clsx';
 
-import { PHASES } from '../shared/constants';
 import { scoreWord } from '../shared/scoreWord';
 
 import classes from './Review.module.css';
+import {ACTIONS} from '../shared/reducer';
 
-const Review = ({ words, setWords, setPhase }) => {
+const Review = ({ state, dispatch }) => {
+  const {words} = state;
+
   const sortedWords = useMemo(
     () => [...words].sort((a, b) => a.localeCompare(b)),
     [words],
   );
+
   const longestLength = useMemo(
     () => sortedWords.reduce((min, word) => Math.max(min, word.length), Number.MIN_SAFE_INTEGER),
     [sortedWords],
@@ -21,10 +24,7 @@ const Review = ({ words, setWords, setPhase }) => {
   );
 
 
-  const restartGame = useCallback(() => {
-    setPhase(PHASES.SETUP);
-    setWords([]);
-  });
+  const handleRestart = useCallback(() => dispatch(ACTIONS.RESTART_GAME));
 
   const toggleWord = useCallback((index) => {
     const newData = [...wordData];
@@ -56,7 +56,7 @@ const Review = ({ words, setWords, setPhase }) => {
           .map(scoreWord)
           .reduce((t, s) => t + s, 0)}
       </div>
-      <button className={classes.restartButton} onClick={restartGame}>
+      <button className={classes.restartButton} onClick={handleRestart}>
         Restart
       </button>
     </div>

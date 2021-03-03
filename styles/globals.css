@@ -1,6 +1,7 @@
 /* Vars */
 body {
   --gap: 16px;
+  --grid-size: min(calc(100vmin - 2 * var(--gap)), 800px);
 
   --white: #ffffffff;
   --grey: #eeeeeeff;
@@ -15,12 +16,8 @@ body {
 @media (max-width: 380px) {
   body {
     --gap: 8px;
+    --grid-size: calc(100vmin - 2 * var(--gap));
   }
-}
-
-/* Calculated Vars */
-body {
-  --grid-size: calc(100vmin - 2 * var(--gap));
 }
 
 /* Styling */
