@@ -65,3 +65,7 @@ input {
 input::placeholder {
   font-family: serif;
 }
+
+.material-icons {
+  user-select: none;
+}
