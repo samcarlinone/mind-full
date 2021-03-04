@@ -26,3 +26,13 @@
   font-size: calc(max(1.5rem, var(--grid-size) / 12));
   margin: var(--gap);
 }
+
+@keyframes overtime {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.overtime {
+  color: var(--accent-bold);
+  animation: overtime 1s linear infinite alternate-reverse;
+}

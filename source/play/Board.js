@@ -7,7 +7,7 @@ import classes from './Board.module.css';
 import {ACTIONS} from '../shared/reducer';
 import {SHORT_VIBRATION} from '../shared/constants';
 
-const Board = ({ dispatch, letters, angle }) => {
+const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
   const [pointerActive, setPointerActive] = useState(false);
   const [touchIndices, setTouchIndexes] = useState([]);
 
@@ -37,6 +37,7 @@ const Board = ({ dispatch, letters, angle }) => {
   // Handle Interaction
   const pointerDown = useCallback(() => {
     setPointerActive(true);
+    wordInProgressRef.current = true;
   })
 
   const pointerMove = useCallback((e) => {
@@ -70,6 +71,8 @@ const Board = ({ dispatch, letters, angle }) => {
     dispatch(ACTIONS.ADD_WORD, mapIndexesToWord());
     
     setPointerActive(false);
+    wordInProgressRef.current = false;
+
     setTouchIndexes([]);
   });
 
