@@ -1,12 +1,37 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import clsx from 'clsx';
 
 import Brain from './Brain';
 
 import classes from './Setup.module.css';
 import {ACTIONS} from '../shared/reducer';
+import {LOCAL_STORAGE, CLASSES} from '../shared/constants';
 
 const Setup = ({ state, dispatch }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const updateBodyDarkMode = (darkMode) => {
+    if (darkMode) document.body.classList.add(CLASSES.DARK_MODE);
+    else document.body.classList.remove(CLASSES.DARK_MODE);
+  };
+
+  useEffect(() => {
+    const loadedDarkMode = Boolean(localStorage.getItem(LOCAL_STORAGE.DARK_MODE));
+
+    setIsDarkMode(loadedDarkMode);
+    updateBodyDarkMode(loadedDarkMode);
+  }, []);
+
+  const handleToggleDarkMode = useCallback(() => {
+    setIsDarkMode((oldDarkMode) => {
+      const newDarkMode = !oldDarkMode;
+
+      localStorage.setItem(LOCAL_STORAGE.DARK_MODE, newDarkMode);
+      updateBodyDarkMode(newDarkMode);
+
+      return newDarkMode;
+    })
+  }, []);
+
   const handleSeedChange = useCallback((e) => dispatch(ACTIONS.SET_SEED, e.target.value), []);
   const handleToggleGroup = useCallback(() => dispatch(ACTIONS.TOGGLE_GROUP), []);
 
@@ -50,6 +75,12 @@ const Setup = ({ state, dispatch }) => {
           onClick={handleReviewLast}
         >
           restore
+        </span>
+        <span
+          className={clsx('material-icons', classes.actionIcon)}
+          onClick={handleToggleDarkMode}
+        >
+          {isDarkMode ? 'dark_mode' : 'light_mode'}
         </span>
       </div>
     </div>

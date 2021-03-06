@@ -15,7 +15,7 @@
   box-sizing: border-box;
   
   border-radius: var(--gap);
-  background-color: #EEE;
+  background-color: var(--grey);
   
   cursor: pointer;
   touch-action: none;
@@ -35,7 +35,8 @@
   justify-content: center;
   align-items: center;
   
-  background-color: #FFF;
+  color: var(--black);
+  background-color: var(--white);
   border-radius: 25%;
   
   font-size: calc(var(--grid-size) / 7);
@@ -87,7 +88,7 @@
   padding: 0 var(--gap);
   margin-top: var(--gap);
   
-  background-color: #EEE;
+  background-color: var(--grey);
   border-radius: var(--gap);
   
   font-size: calc(var(--grid-size) / 7);

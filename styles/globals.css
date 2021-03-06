@@ -1,10 +1,12 @@
 /* Vars */
 body {
   --gap: 16px;
-  --grid-size: min(calc(100vmin - 2 * var(--gap)), 800px);
+  --grid-size: min(calc(100vmin - 2 * var(--gap)), 600px);
 
   --white: #ffffffff;
   --grey: #eeeeeeff;
+  --grey-hover: #ccccccff;
+  --grey-active: #aaaaaaff;
   --black: #130303ff;
   --accent-bold: #db162fff;
   --accent-subtle: #1098f7ff;
@@ -12,6 +14,16 @@ body {
   --curve: cubic-bezier(1.000, -0.650, 0.000, 1.650);
 
   --serif-fonts: Georgia, Garamond, "Times New Roman", Times, serif;
+}
+
+.dark-mode {
+  --white: #1d1d1dff;
+  --grey: #444444ff;
+  --grey-hover: #666666ff;
+  --grey-active: #888888ff;
+  --black: #d8d8d8ff;
+  --accent-bold: #db162fff;
+  --accent-subtle: #1098f7ff;
 }
 
 /* Mobile Vars */
@@ -26,15 +38,24 @@ body {
 body {
   padding: 0;
   margin: 0;
+
+  background-color: var(--white);
 }
 
 /* Shared */
 * {
+  color: var(--black);
   font-family: var(--serif-fonts);
+}
+
+svg {
+  fill: var(--black);
 }
 
 input {
   appearance: none;
+  color: var(--black);
+  background-color: var(--white);
 }
 
 button, input[type="submit"] {
@@ -51,18 +72,18 @@ button, input[type="submit"] {
   
   justify-self: stretch;
   
-  background-color: #EEE;
+  background-color: var(--grey);
   transition: background-color 0.2s;
   
   cursor: pointer;
 }
 
 button:hover, input[type='submit']:hover {
-  background-color: #CCC;
+  background-color: var(--grey-hover);
 }
 
 button:active, input[type='submit']:active {
-  background-color: #AAA;
+  background-color: var(--grey-active);
   transition: background-color 0s;
 }
 

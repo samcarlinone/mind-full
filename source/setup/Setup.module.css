@@ -84,7 +84,6 @@
 
 .groupToggle span {
   font-size: 10vmin;
-  border: 1px solid transparent;
 }
 
 .activeMode {
@@ -119,6 +118,11 @@
   transform: rotate(180deg);
 }
 
+:global(.dark-mode) .toggleIndicator span {
+  color: #FFF;
+}
+
+
 .explainer {
   width: 80vw;
   font-size: 1.25rem;
@@ -127,7 +131,16 @@
   transition: color 0.25s var(--curve);
 }
 
+.explainer > * {
+  color: transparent;
+  transition: color 0.25s var(--curve);
+}
+
 .explainer.active {
+  color: var(--black);
+}
+
+.explainer.active > * {
   color: var(--black);
 }
 
@@ -142,6 +155,7 @@
 .actionIcon {
   font-size: calc(max(1.5rem, var(--grid-size) / 8));
 
+  margin: var(--gap);
   padding: calc(var(--gap) / 4);
   background-color: var(--grey);
   border-radius: 8px;
