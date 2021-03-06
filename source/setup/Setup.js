@@ -15,7 +15,7 @@ const Setup = ({ state, dispatch }) => {
   };
 
   useEffect(() => {
-    const loadedDarkMode = Boolean(localStorage.getItem(LOCAL_STORAGE.DARK_MODE));
+    const loadedDarkMode = JSON.parse(localStorage.getItem(LOCAL_STORAGE.DARK_MODE));
 
     setIsDarkMode(loadedDarkMode);
     updateBodyDarkMode(loadedDarkMode);
