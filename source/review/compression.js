@@ -20,6 +20,14 @@ board = [
   'v', 'qu', 'e', 't',
 ]
 
+const COMMANDS = {
+  END: 8,
+  BRANCH: 9,
+  TRI_BRANCH: 10,
+  N_BRANCH: 11,
+  TERMINATING_BRANCH: 12,
+};
+
 const DIRECTIONS = {
   NW: {index: 0, offset: -5},
    N: {index: 1, offset: -4},
@@ -65,6 +73,8 @@ const unique = (value, index, arr) => arr.indexOf(value) === index;
 //  [[3, ...], [3, ...]],
 // ]
 const groupPaths = (wordsAsPathOptions) => {
+  let wordsAsPaths = wordsAsPathOptions;
+
   compatiblePaths = [];
 
   while (wordsAsPaths.length > 0) {
@@ -113,6 +123,35 @@ const pathsToTree = (paths) => {
   });
 
   return tree;
+}
+
+window.emergencyStop = false;
+
+const generateInstructions = (object) => {
+  const result = [Number(Object.keys(object)[0])];
+  let stack = [object];
+
+  while (stack.length > 0) {
+    if (window.emergencyStop) return;
+
+    const parent = stack.pop();
+
+    Object.keys(parent).forEach((index) => {
+      const child = parent[index];
+
+      if (Object.keys(child).length === 0) result.push(COMMANDS.END);
+
+      if (Object.keys(child).length === 1) {
+        const current = Number(index);
+        const next = Number(Object.keys(child)[0]);
+  
+        result.push(Object.values(DIRECTIONS).find(({offset}) => offset === next - current).index);
+        stack.push(child);
+      }
+    });
+  }
+
+  return result;
 }
 
 lookup = generateBoardLookup(board);
