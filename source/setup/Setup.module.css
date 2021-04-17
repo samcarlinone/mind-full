@@ -13,7 +13,7 @@
 }
 
 .name {
-  font-size: 25vmin;
+  font-size: min(25vmin, 16rem);
   font-weight: 700;
 
   margin-bottom: auto;
@@ -150,6 +150,21 @@
   align-items: center;
 
   margin-top: auto;
+}
+
+@media (min-width: 720px) {
+  .actionIcons {
+    position: fixed;
+    right: 0;
+    
+    flex-direction: column;
+  }
+
+  .explainer {
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 16px;
+  }
 }
 
 .actionIcon {
