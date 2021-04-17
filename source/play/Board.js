@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import {isAdjacent} from '../shared/isAdjacent';
@@ -7,9 +7,12 @@ import classes from './Board.module.css';
 import {ACTIONS} from '../shared/reducer';
 import {SHORT_VIBRATION} from '../shared/constants';
 
-const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
+const QU_CHAR = '1';
+
+const Board = ({ dispatch, wordInProgressRef, letters, angle, setAngle }) => {
   const [pointerActive, setPointerActive] = useState(false);
   const [touchIndices, setTouchIndexes] = useState([]);
+  const [keyboardWord, setKeyboardWord] = useState('');
 
   const mapIndexesToWord = () =>
     touchIndices
@@ -36,12 +39,16 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
 
   // Handle Interaction
   const pointerDown = useCallback(() => {
+    setKeyboardWord('');
+
     setPointerActive(true);
     wordInProgressRef.current = true;
   })
 
   const pointerMove = useCallback((e) => {
     if (!pointerActive) return;
+
+    setKeyboardWord('');
 
     const element = document.elementFromPoint(e.clientX, e.clientY);
 
@@ -68,6 +75,8 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
   })
 
   const pointerUp = useCallback(() => {
+    setKeyboardWord('');
+
     dispatch(ACTIONS.ADD_WORD, mapIndexesToWord());
     
     setPointerActive(false);
@@ -75,6 +84,72 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
 
     setTouchIndexes([]);
   });
+
+  // Keyboard word validation
+  const toQuChar = (letter) => letter === 'Qu' ? QU_CHAR : letter;
+
+  const keyboardChains = useMemo(() => {
+    let chains = [];
+
+    letters.map((l, i) => {
+      if (toQuChar(l) === keyboardWord[0]) chains.push([i]);
+    });
+  
+    [...keyboardWord.slice(1)].forEach((letter) => {
+      let newChains = [];
+
+      const indexes = letters
+        .map((l, i) => toQuChar(l) === letter ? i : undefined)
+        .filter((i) => i !== undefined);
+
+      chains.forEach((chain) => {
+        indexes.forEach((index) => {
+          if (isAdjacent(chain.slice(-1)[0], index) && !chain.includes(index))
+            newChains.push([...chain, index]);
+        })
+      })
+
+      chains = newChains;
+    });
+
+    return chains;
+  }, [keyboardWord]);
+  
+  const lastIndexes = useMemo(() => keyboardChains.map((chain) => chain.slice(-1)[0]), [keyboardWord]);
+
+  // Global key press listener
+  const keyDown = useCallback((e) => {
+    setTouchIndexes([]);
+
+    if (e.key === 'ArrowRight') setAngle((angle) => angle + 90);
+    if (e.key === 'ArrowLeft') setAngle((angle) => angle - 90);
+
+    if (e.key === 'Control' || e.key === ' ') setKeyboardWord('');
+
+    if (e.key === 'Backspace') setKeyboardWord(keyboardWord.slice(0, -1));
+
+    if (e.key === 'Enter') {
+      if (keyboardWord.length < 3 || keyboardChains.length === 0) return;
+
+      dispatch(ACTIONS.ADD_WORD, keyboardWord.replace(RegExp(QU_CHAR, 'g'), 'QU'));
+      setKeyboardWord('');
+    }
+
+    if (/^[A-Z]$/.test(e.key.toUpperCase())) {
+      const newWord = e.key.toUpperCase() === 'Q'
+        ? keyboardWord + QU_CHAR
+        : keyboardWord + e.key.toUpperCase();
+
+      setKeyboardWord(newWord);
+    }
+  });
+
+  useEffect(() => {
+    const handler = keyDown;
+    document.addEventListener('keydown', handler);
+
+    return () => document.removeEventListener('keydown', handler);
+  }, [keyboardWord]);
 
   return (
     <>
@@ -95,6 +170,9 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
             '--next-angle': `${nextDirection}deg`,
             '--offset-distance': nextDirection % 10 === 0 ? '1' : Math.SQRT2.toString(),
           };
+
+          const isLastCell = lastIndexes.includes(i);
+          const isPathCell = !isLastCell && keyboardChains.some((chain) => chain.includes(i));
           
           return (
             <div
@@ -102,7 +180,9 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
               data-index={i}
               style={style}
               className={clsx(classes.cell, {
-                [classes.usedCell]: isTouched
+                [classes.usedCell]: isTouched,
+                [classes.lastCell]: isLastCell,
+                [classes.pathCell]: isPathCell,
               })}
               onPointerMove={pointerMove}
             >
@@ -114,7 +194,13 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle }) => {
           )
         })}
       </div>
-      <div className={classes.word}>{mapIndexesToWord()}</div>
+      <div className={clsx(classes.word, {
+        [classes.errorWord]: keyboardWord.length > 0 && keyboardChains.length === 0,
+      })}>
+        {keyboardWord.length > 0
+          ? keyboardWord.replace(RegExp(QU_CHAR, 'g'), 'QU')
+          : mapIndexesToWord()}
+      </div>
     </>
   );
 };

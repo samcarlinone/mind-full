@@ -1,6 +1,6 @@
-import Chance from 'chance'
+import Chance from 'chance';
 
-import {DICE} from '../shared/constants'
+import {DICE} from '../shared/constants';
 
 export const generateBoard = (seed) => {
   const gen = new Chance(seed);

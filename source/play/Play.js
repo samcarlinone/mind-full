@@ -48,7 +48,13 @@ const Play = ({ state, dispatch }) => {
         <span className="material-icons" onClick={handleRotate}>rotate_90_degrees_ccw</span>
       </div>
 
-      <Board dispatch={dispatch} wordInProgressRef={wordInProgressRef} letters={letters} angle={boardAngle} />
+      <Board
+        dispatch={dispatch}
+        wordInProgressRef={wordInProgressRef}
+        letters={letters}
+        angle={boardAngle}
+        setAngle={setBoardAngle}
+      />
       <SmallWordList words={words} />
     </div>
   );

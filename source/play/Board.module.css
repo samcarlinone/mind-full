@@ -37,6 +37,7 @@
   
   color: var(--black);
   background-color: var(--white);
+  border: 4px solid var(--white);
   border-radius: 25%;
   
   font-size: calc(var(--grid-size) / 7);
@@ -47,6 +48,7 @@
   
   z-index: 1;
   position: relative;
+  box-sizing: border-box;
 }
 
 .cell > span {
@@ -61,6 +63,14 @@
   z-index: var(--element-z);
   
   transform-origin: center;
+}
+
+.lastCell {
+  border: 4px solid var(--accent-subtle);
+}
+
+.pathCell {
+  opacity: 50%;
 }
 
 .connector {
@@ -96,10 +106,12 @@
   
   user-select: none;
 
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: '';
-  direction: rtl;
   text-align: left;
+}
+
+.errorWord {
+  text-decoration: underline var(--accent-bold);
 }
