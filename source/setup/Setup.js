@@ -32,6 +32,8 @@ const Setup = ({ state, dispatch }) => {
     })
   }, []);
 
+  const handleOpenFeedback = useCallback(() => window.open('https://forms.gle/V7kGZSRKMaRQarq47', '_blank'), []);
+
   const handleSeedChange = useCallback((e) => dispatch(ACTIONS.SET_SEED, e.target.value), []);
   const handleToggleGroup = useCallback(() => dispatch(ACTIONS.TOGGLE_GROUP), []);
 
@@ -71,16 +73,25 @@ const Setup = ({ state, dispatch }) => {
       </div>
       <div className={classes.actionIcons}>
         <span
+          title="Last Score"
           className={clsx('material-icons', classes.actionIcon)}
           onClick={handleReviewLast}
         >
           restore
         </span>
         <span
+          title="Toggle Dark Mode"
           className={clsx('material-icons', classes.actionIcon)}
           onClick={handleToggleDarkMode}
         >
           {isDarkMode ? 'dark_mode' : 'light_mode'}
+        </span>
+        <span
+          title="Give Feedback / Report Bugs"
+          className={clsx('material-icons', classes.actionIcon)}
+          onClick={handleOpenFeedback}
+        >
+          bug_report
         </span>
       </div>
     </div>
