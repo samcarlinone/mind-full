@@ -17,6 +17,8 @@
   font-weight: 700;
 
   margin-bottom: auto;
+
+  user-select: none;
 }
 
 .name > div {
