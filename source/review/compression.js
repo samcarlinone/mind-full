@@ -158,4 +158,6 @@ lookup = generateBoardLookup(board);
 wordsAsPaths = words.map((word) => findPaths(word, lookup));
 
 compatiblePaths = groupPaths(wordsAsPaths);
-compatiblePaths.map(pathsToTree)
+forest = compatiblePaths.map(pathsToTree);
+
+
