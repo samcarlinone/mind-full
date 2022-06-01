@@ -11,6 +11,7 @@ const indexDistance = (index1, index2) =>
 const isAdjacent = (index1, index2) => indexDistance(index1, index2) < 1.5;
 // end isAdjacent
 
+// testCase
 words = ['ease', 'noes', 'nose', 'not', 'note', 'notes', 'nots', 'sate', 'saw', 'sea', 'season', 'son', 'sow', 'sown', 'taste', 'test', 'toe', 'toes', 'ton', 'toss', 'tote', 'totes', 'was', 'waste', 'watt', 'watts', 'wet', 'woe', 'woes', 'won']
 
 board = [
@@ -19,15 +20,10 @@ board = [
   'n', 't', 't', 'w',
   'v', 'qu', 'e', 't',
 ]
+// end testCase
 
-const COMMANDS = {
-  END: 8,
-  BRANCH: 9,
-  TRI_BRANCH: 10,
-  N_BRANCH: 11,
-  TERMINATING_BRANCH: 12,
-};
-
+// 0 - 15 instruction space (nibble / half byte)
+// 0 - 7 for directions
 const DIRECTIONS = {
   NW: {index: 0, offset: -5},
    N: {index: 1, offset: -4},
@@ -37,6 +33,15 @@ const DIRECTIONS = {
    S: {index: 5, offset: +4},
   SW: {index: 6, offset: +3},
    W: {index: 7, offset: -1},
+};
+
+// 13 - 8 for 2 - 7 branches
+const getBranchCommand = (numberOfBranches) => 15 - numberOfBranches; 
+
+// 14 - 15 start (+ index nibble)
+const COMMANDS = {
+  START: 14,
+  END: 15,
 };
 
 // Returns {letter: [index1, index2, ...]}
@@ -127,37 +132,37 @@ const pathsToTree = (paths) => {
 
 window.emergencyStop = false;
 
-const generateInstructions = (object) => {
-  const result = [Number(Object.keys(object)[0])];
-  let stack = [object];
+const getDirectionInstruction = (index, childIndex) => {
+  const current = Number(index);
+  const next = Number(childIndex);
 
-  while (stack.length > 0) {
-    if (window.emergencyStop) return;
+  return Object.values(DIRECTIONS).find(({offset}) => offset === next - current).index;
+}
 
-    const parent = stack.pop();
+const generateInstructions = (object, parentIndex = -1) => {
+  if (window.emergencyStop) return;
 
-    Object.keys(parent).forEach((index) => {
-      const child = parent[index];
+  if (Object.keys(parent).length === 0) return [COMMANDS.END];
 
-      if (Object.keys(child).length === 0) result.push(COMMANDS.END);
+  if (Object.keys(parent).length === 1) {
+    const index = Object.keys(parent)[0];
+    const childIndex = Object.keys(parent[index])[0];
 
-      if (Object.keys(child).length === 1) {
-        const current = Number(index);
-        const next = Number(Object.keys(child)[0]);
-  
-        result.push(Object.values(DIRECTIONS).find(({offset}) => offset === next - current).index);
-        stack.push(child);
-      }
-    });
+    return [getDirectionInstruction(index, childIndex), ...generateInstructions(parent[index])];
   }
 
-  return result;
+  if (Object.keys(parent).length > 1) {
+    return Object.values(parent).map(child => generateInstructions(child)).flat();
+  }
+
+  throw `Invalid parent ${JSON.stringify(parent)}`;
 }
+
+const processObject = (object) =>
+  [Number(Object.keys(object)[0]), ...generateInstructions(object)];
 
 lookup = generateBoardLookup(board);
 wordsAsPaths = words.map((word) => findPaths(word, lookup));
 
 compatiblePaths = groupPaths(wordsAsPaths);
 forest = compatiblePaths.map(pathsToTree);
-
-
