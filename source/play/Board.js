@@ -183,6 +183,7 @@ const Board = ({ dispatch, wordInProgressRef, letters, angle, setAngle }) => {
                 [classes.usedCell]: isTouched,
                 [classes.lastCell]: isLastCell,
                 [classes.pathCell]: isPathCell,
+                [classes.quCell]: letter === 'Qu',
               })}
               onPointerMove={pointerMove}
             >

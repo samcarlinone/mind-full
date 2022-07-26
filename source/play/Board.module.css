@@ -49,6 +49,8 @@
   z-index: 1;
   position: relative;
   box-sizing: border-box;
+
+  overflow: hidden;
 }
 
 .cell > span {
@@ -56,6 +58,10 @@
 
   transform: rotate(calc(360deg - var(--angle)));
   transition: transform 0.2s ease-in-out 0.2s;
+}
+
+.quCell {
+  font-size: calc(var(--grid-size) / 10);
 }
 
 .usedCell {
