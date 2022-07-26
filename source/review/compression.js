@@ -12,9 +12,9 @@ const isAdjacent = (index1, index2) => indexDistance(index1, index2) < 1.5;
 // end isAdjacent
 
 // testCase
-words = ['ease', 'noes', 'nose', 'not', 'note', 'notes', 'nots', 'sate', 'saw', 'sea', 'season', 'son', 'sow', 'sown', 'taste', 'test', 'toe', 'toes', 'ton', 'toss', 'tote', 'totes', 'was', 'waste', 'watt', 'watts', 'wet', 'woe', 'woes', 'won']
+testWords = ['ease', 'noes', 'nose', 'not', 'note', 'notes', 'nots', 'sate', 'saw', 'sea', 'season', 'son', 'sow', 'sown', 'taste', 'test', 'toe', 'toes', 'ton', 'toss', 'tote', 'totes', 'was', 'waste', 'watt', 'watts', 'wet', 'woe', 'woes', 'won']
 
-board = [
+testBoard = [
   't', 'e', 's', 'e',
   'w', 'o', 's', 'a',
   'n', 't', 't', 'w',
@@ -34,6 +34,9 @@ const DIRECTIONS = {
   SW: {index: 6, offset: +3},
    W: {index: 7, offset: -1},
 };
+
+const DIRECTIONS_ENCODE_MAP = new Map(Object.values(DIRECTIONS).map(({index, offset}) => [offset, index]));
+const DIRECTIONS_DECODE_MAP = new Map(Object.values(DIRECTIONS).map(({index, offset}) => [index, offset]));
 
 // 13 - 8 for 2 - 7 branches
 const getBranchCommand = (numberOfBranches) => 15 - numberOfBranches; 
@@ -69,7 +72,7 @@ const findPaths = (word, lookup) => {
   }
 
   return paths;
-}
+};
 
 const unique = (value, index, arr) => arr.indexOf(value) === index;
 
@@ -80,7 +83,7 @@ const unique = (value, index, arr) => arr.indexOf(value) === index;
 const groupPaths = (wordsAsPathOptions) => {
   let wordsAsPaths = wordsAsPathOptions;
 
-  compatiblePaths = [];
+  let compatiblePaths = [];
 
   while (wordsAsPaths.length > 0) {
     firstIndexes = wordsAsPaths
@@ -112,7 +115,7 @@ const groupPaths = (wordsAsPathOptions) => {
   };
 
   return compatiblePaths;
-}
+};
 
 // Returns {index1: {index3: {}}, index2: {}}
 const pathsToTree = (paths) => {
@@ -128,41 +131,65 @@ const pathsToTree = (paths) => {
   });
 
   return tree;
-}
-
-window.emergencyStop = false;
+};
 
 const getDirectionInstruction = (index, childIndex) => {
   const current = Number(index);
   const next = Number(childIndex);
 
-  return Object.values(DIRECTIONS).find(({offset}) => offset === next - current).index;
-}
+  return DIRECTIONS_ENCODE_MAP.get(next - current);
+};
 
-const generateInstructions = (object, parentIndex = -1) => {
-  if (window.emergencyStop) return;
+// Returns instructions list [COMMANDS.START, startIndex, DIRECTIONS.N, ...]
+const generateInstructions = (obj) =>
+  instructionsTraveler(obj).flat(Infinity);
 
-  if (Object.keys(parent).length === 0) return [COMMANDS.END];
+// Generates a nested instructions list by visiting object tree nodes
+const instructionsTraveler = (obj, parentIndex = -1) => {
+  const children = Object.keys(obj);
 
-  if (Object.keys(parent).length === 1) {
-    const index = Object.keys(parent)[0];
-    const childIndex = Object.keys(parent[index])[0];
+  if (children.length === 0) return [COMMANDS.END];
 
-    return [getDirectionInstruction(index, childIndex), ...generateInstructions(parent[index])];
+  if (children.length === 1 && parentIndex === -1) {
+    return [COMMANDS.START, Number(children[0]), instructionsTraveler(obj[children[0]], children[0])];
   }
 
-  if (Object.keys(parent).length > 1) {
-    return Object.values(parent).map(child => generateInstructions(child)).flat();
+  if (children.length === 1) {
+    return [getDirectionInstruction(parentIndex, children[0]), instructionsTraveler(obj[children[0]], children[0])];
+  }
+
+  if (children.length > 1) {
+    return [
+      getBranchCommand(children.length),
+      children.map(child => [getDirectionInstruction(parentIndex, child), instructionsTraveler(obj[child], child)])
+    ];
   }
 
   throw `Invalid parent ${JSON.stringify(parent)}`;
-}
+};
 
-const processObject = (object) =>
-  [Number(Object.keys(object)[0]), ...generateInstructions(object)];
+// Convert a list of instructions (nibbles) into a url safe base64 encoded string
+const instructionsToString = (instructions) => {
+  let binaryString = '';
 
-lookup = generateBoardLookup(board);
-wordsAsPaths = words.map((word) => findPaths(word, lookup));
+  for (let i = 0; i < instructions.length; i += 2) {
+    binaryString += String.fromCharCode(instructions[i] << 4 | instructions[i + 1]);
+  }
 
-compatiblePaths = groupPaths(wordsAsPaths);
-forest = compatiblePaths.map(pathsToTree);
+  return btoa(binaryString).replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '~');
+};
+
+// Board compression function
+const compressBoard = (board, words) => {
+  const lookup = generateBoardLookup(board);
+  const wordsAsPaths = words.map((word) => findPaths(word, lookup));
+
+  const compatiblePaths = groupPaths(wordsAsPaths);
+  const forest = compatiblePaths.map(pathsToTree);
+
+  const instructions = forest.map(generateInstructions).flat();
+
+  return instructionsToString(instructions);
+};
+
+compressBoard(testBoard, testWords)
